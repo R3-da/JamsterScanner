@@ -15,8 +15,8 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor (JamsterS
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-
-    midiKeyboard.setAvailableRange(0, 127);
+    midiKeyboard.setKeyWidth(20.0f);
+    midiKeyboard.setAvailableRange(0, 120);
     addAndMakeVisible(midiKeyboard);
 
     setSize (700, 500);
