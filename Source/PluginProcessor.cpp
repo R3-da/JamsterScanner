@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "JucePluginDefines.h"
 
 //==============================================================================
 JamsterScannerAudioProcessor::JamsterScannerAudioProcessor()
@@ -95,12 +96,15 @@ void JamsterScannerAudioProcessor::prepareToPlay (double sampleRate, int samples
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    keyboardState.reset();
+    reset();
 }
 
 void JamsterScannerAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    keyboardState.reset();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -143,6 +147,8 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+
+    keyboardState.processNextMidiBuffer(midiMessages, 0, buffer.getNumSamples(), true);
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...

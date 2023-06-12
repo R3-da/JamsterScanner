@@ -11,11 +11,15 @@
 
 //==============================================================================
 JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor (JamsterScannerAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p), midiKeyboard(p.keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+
+    midiKeyboard.setAvailableRange(0, 127);
+    addAndMakeVisible(midiKeyboard);
+
+    setSize (700, 500);
 }
 
 JamsterScannerAudioProcessorEditor::~JamsterScannerAudioProcessorEditor()
@@ -37,4 +41,12 @@ void JamsterScannerAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+    auto r = getLocalBounds().reduced(8);
+
+    midiKeyboard.setBounds(r.removeFromBottom(70));
+}
+
+void JamsterScannerAudioProcessorEditor::hostMIDIControllerIsAvailable(bool controllerIsAvailable)
+{
+    midiKeyboard.setVisible(!controllerIsAvailable);
 }
