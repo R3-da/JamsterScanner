@@ -45,8 +45,3 @@ void JamsterScannerAudioProcessorEditor::resized()
 
     midiKeyboard.setBounds(r.removeFromBottom(70));
 }
-
-void JamsterScannerAudioProcessorEditor::hostMIDIControllerIsAvailable(bool controllerIsAvailable)
-{
-    midiKeyboard.setVisible(!controllerIsAvailable);
-}

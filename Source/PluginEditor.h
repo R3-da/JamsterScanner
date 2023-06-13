@@ -24,7 +24,6 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    void hostMIDIControllerIsAvailable(bool) override;
 
 private:
     // This reference is provided as a quick way for your editor to
