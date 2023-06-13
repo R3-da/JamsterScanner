@@ -15,6 +15,8 @@
 JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterScannerAudioProcessor& p)
     : AudioProcessorEditor(&p), processor(p), keyboardComponent(p.keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
 {
+    keyboardComponent.setKeyWidth(20.0f);
+    keyboardComponent.setAvailableRange(0, 120);
     addAndMakeVisible(keyboardComponent);
 
     addAndMakeVisible(midiMessagesBox);
@@ -30,7 +32,7 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize(400, 300);
+    setSize(700, 500);
 }
 
 JamsterScannerAudioProcessorEditor::~JamsterScannerAudioProcessorEditor()
@@ -63,11 +65,6 @@ void JamsterScannerAudioProcessorEditor::resized()
 void JamsterScannerAudioProcessorEditor::logMidiMessage(const juce::MidiMessage& message)
 {
     writeLog(getMidiMessageDescription(message));
-}
-
-void JamsterScannerAudioProcessorEditor::addListener(juce::Button::Listener* listener) {
-    resetButton.addListener(listener);
-    metronomeButton.addListener(listener);
 }
 
 

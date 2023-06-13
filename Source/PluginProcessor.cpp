@@ -96,8 +96,6 @@ void JamsterScannerAudioProcessor::changeProgramName (int index, const juce::Str
 //==============================================================================
 void JamsterScannerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    this->sampleRate = sampleRate;
-    this->blockSize = samplesPerBlock;
     keyboardState.reset();
     reset();
 }
@@ -150,31 +148,6 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     }
     midi.clear();
 
-    // Get current BPM and update metronome.
-    
-    juce::AudioPlayHead *head = getPlayHead();
-    if (head && !resetting) {
-        head->getCurrentPosition(info);
-        int samplesPerHalfBeat = (60.0 / info.bpm / 2.0) * sampleRate;
-        if ((currentSample + blockSize) >= samplesPerHalfBeat) {
-            int offset = juce::jmax(0, juce::jmin(samplesPerHalfBeat - currentSample, blockSize - 1));
-            msg = beatFirstHalf
-                ? juce::MidiMessage::noteOff(16, 60)
-                : juce::MidiMessage::noteOn(16, 60, (juce::uint8) 127);
-            if (metronomeOn) midi.addEvent(msg, offset);
-            if (!beatFirstHalf) currentBeat++;
-            beatFirstHalf = !beatFirstHalf;
-            update = true;
-        }
-        currentSample = (currentSample + blockSize) % samplesPerHalfBeat;
-    }
-    
-    if (resetting) {
-        doReset(midi);
-        resetting = false;
-        update = true;
-    }
-
     if (update) triggerAsyncUpdate();
 }
 
@@ -187,7 +160,6 @@ bool JamsterScannerAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor* JamsterScannerAudioProcessor::createEditor()
 {
     JamsterScannerAudioProcessorEditor *editor = new JamsterScannerAudioProcessorEditor(*this);
-    editor->addListener(this);
     return editor;
 }
 
@@ -217,28 +189,6 @@ void JamsterScannerAudioProcessor::handleAsyncUpdate()
     }
     
     messageLog.clear();
-}
-
-void JamsterScannerAudioProcessor::buttonClicked(juce::Button *b)
-{
-    juce::ToggleButton *button = dynamic_cast<juce::ToggleButton*>(b);
-    if (button) {
-        metronomeOn = button->getToggleState();
-    } else {
-        resetting = true;
-    }
-}
-
-void JamsterScannerAudioProcessor::doReset(juce::MidiBuffer &midi)
-{
-    // clear all notes on all channels
-    for (int i=0; i<16*128; i++) {
-        midi.addEvent(juce::MidiMessage::noteOff(i/128+1, i%128), 0);
-    }
-
-    currentSample = 0;
-    currentBeat = 0;
-    beatFirstHalf = true;
 }
 
 //==============================================================================

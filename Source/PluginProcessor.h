@@ -15,7 +15,7 @@
 //==============================================================================
 /**
 */
-class JamsterScannerAudioProcessor : public juce::AudioProcessor, public juce::AsyncUpdater, public juce::Button::Listener
+class JamsterScannerAudioProcessor : public juce::AudioProcessor, public juce::AsyncUpdater
 {
 public:
     //==============================================================================
@@ -62,16 +62,6 @@ private:
         juce::Array<juce::MidiMessage> messageLog;
 
     juce::AudioPlayHead::CurrentPositionInfo info; // The last updated position
-    double sampleRate;                       // samples per sec
-    int blockSize;                           // samples per block
-
-    int currentSample = 0;
-    int currentBeat = 0;
-    bool beatFirstHalf = true;
-    bool metronomeOn = false;
-    bool resetting = false;
 
     void handleAsyncUpdate() override;
-    void buttonClicked(juce::Button*) override;
-    void doReset(juce::MidiBuffer&);
 };
