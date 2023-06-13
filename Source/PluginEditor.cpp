@@ -15,10 +15,12 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor (JamsterS
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-
-    midiKeyboard.setAvailableRange(0, 127);
+    midiKeyboard.setKeyWidth(20.0f);
+    midiKeyboard.setAvailableRange(0, 120);
     addAndMakeVisible(midiKeyboard);
 
+    addAndMakeVisible(notesBoxComponent);
+    
     setSize (700, 500);
 }
 
@@ -31,10 +33,6 @@ void JamsterScannerAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void JamsterScannerAudioProcessorEditor::resized()
@@ -44,9 +42,5 @@ void JamsterScannerAudioProcessorEditor::resized()
     auto r = getLocalBounds().reduced(8);
 
     midiKeyboard.setBounds(r.removeFromBottom(70));
-}
-
-void JamsterScannerAudioProcessorEditor::hostMIDIControllerIsAvailable(bool controllerIsAvailable)
-{
-    midiKeyboard.setVisible(!controllerIsAvailable);
+    notesBoxComponent.setBounds(r.reduced(8));
 }

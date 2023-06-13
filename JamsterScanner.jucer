@@ -16,6 +16,10 @@
             resource="0" file="Source/CustomMidiKeyboardComponent.cpp"/>
       <FILE id="yBj02O" name="CustomMidiKeyboardComponent.h" compile="0"
             resource="0" file="Source/CustomMidiKeyboardComponent.h"/>
+      <FILE id="EmhVai" name="NotesBoxComponent.cpp" compile="1" resource="0"
+            file="Source/NotesBoxComponent.cpp"/>
+      <FILE id="rJmnAF" name="NotesBoxComponent.h" compile="0" resource="0"
+            file="Source/NotesBoxComponent.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
