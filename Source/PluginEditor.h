@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "CustomMidiKeyboardComponent.h"
+#include "NotesBoxComponent.h"
 
 //==============================================================================
 /**
@@ -30,6 +31,7 @@ private:
     // access the processor object that created it.
     JamsterScannerAudioProcessor& audioProcessor;
     CustomMidiKeyboardComponent midiKeyboard;
+    NotesBoxComponent notesBoxComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JamsterScannerAudioProcessorEditor)
 };
