@@ -17,6 +17,7 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
 {
     keyboardComponent.setKeyWidth(20.0f);
     keyboardComponent.setAvailableRange(0, 120);
+    keyboardComponent.setOctaveForMiddleC(5);
     addAndMakeVisible(keyboardComponent);
 
     addAndMakeVisible(midiMessagesBox);

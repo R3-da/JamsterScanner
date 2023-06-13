@@ -143,8 +143,10 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     int ignore;
     for (juce::MidiBuffer::Iterator it (midi); it.getNextEvent (msg, ignore);)
     {
-        messageLog.add(msg);
-        update = true;
+        if (msg.isNoteOn() || msg.isNoteOff()) {
+            messageLog.add(msg);
+            update = true;
+        }
     }
     midi.clear();
 
