@@ -175,7 +175,8 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
             update = true;
         }
     }
-    //midi.clear();
+
+    midi.clear();
 
     if (update) triggerAsyncUpdate();
 }
