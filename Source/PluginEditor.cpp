@@ -15,9 +15,10 @@
 JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterScannerAudioProcessor& p)
     : AudioProcessorEditor(&p), processor(p), keyboardComponent(p.keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
 {
-    keyboardComponent.setKeyWidth(20.0f);
+    keyboardComponent.setKeyWidth(19.0f);
     keyboardComponent.setAvailableRange(0, 120);
     keyboardComponent.setOctaveForMiddleC(5);
+    keyboardComponent.setLowestVisibleKey(30);
     addAndMakeVisible(keyboardComponent);
 
     addAndMakeVisible(midiMessagesBox);
@@ -65,36 +66,11 @@ void JamsterScannerAudioProcessorEditor::resized()
 
 void JamsterScannerAudioProcessorEditor::logMidiMessage(const juce::MidiMessage& message)
 {
-    writeLog(getMidiMessageDescription(message));
+    writeLog(juce::MidiMessage::getMidiNoteName(message.getNoteNumber(), true, true, 5));
 }
 
 
 //==============================================================================
-
-juce::String JamsterScannerAudioProcessorEditor::getMidiMessageDescription(const juce::MidiMessage& m)
-{
-    if (m.isNoteOn())           return "Note on " + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3);
-    if (m.isNoteOff())          return "Note off " + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3);
-    if (m.isProgramChange())    return "Program change " + juce::String(m.getProgramChangeNumber());
-    if (m.isPitchWheel())       return "Pitch wheel " + juce::String(m.getPitchWheelValue());
-    if (m.isAftertouch())       return "After touch " + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3) + ": " + juce::String(m.getAfterTouchValue());
-    if (m.isChannelPressure())  return "Channel pressure " + juce::String(m.getChannelPressureValue());
-    if (m.isAllNotesOff())      return "All notes off";
-    if (m.isAllSoundOff())      return "All sound off";
-    if (m.isMetaEvent())        return "Meta event";
-
-    if (m.isController())
-    {
-        juce::String name(juce::MidiMessage::getControllerName(m.getControllerNumber()));
-
-        if (name.isEmpty())
-            name = "[" + juce::String(m.getControllerNumber()) + "]";
-
-        return "Controller " + name + ": " + juce::String(m.getControllerValue());
-    }
-
-    return juce::String::toHexString(m.getRawData(), m.getRawDataSize());
-}
 
 void JamsterScannerAudioProcessorEditor::writeLog(const juce::String& m)
 {
