@@ -2,7 +2,8 @@
 
 <JUCERPROJECT id="EPjWYm" name="JamsterScanner" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
+              pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginFormats="buildStandalone,buildVST3">
   <MAINGROUP id="l7Cno5" name="JamsterScanner">
     <GROUP id="{50172F63-4030-8E9B-4845-CD46B1769451}" name="Source">
       <FILE id="CVu3vo" name="PluginProcessor.cpp" compile="1" resource="0"
