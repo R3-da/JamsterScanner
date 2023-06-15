@@ -171,7 +171,14 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     for (juce::MidiBuffer::Iterator it(midi); it.getNextEvent(msg, ignore);)
     {
         if (msg.isNoteOn() || msg.isNoteOff()) {
-            messageLog.add(msg);
+            if (msg.isNoteOn()) {
+                messageLog.add(msg.getNoteNumber());
+                
+            }
+            else if (msg.isNoteOff()) {
+                messageLog.remove(messageLog.indexOf(msg.getNoteNumber()));
+            }
+            
             update = true;
         }
     }
@@ -213,12 +220,11 @@ void JamsterScannerAudioProcessor::handleAsyncUpdate()
         dynamic_cast<JamsterScannerAudioProcessorEditor*>(getActiveEditor());
 
     if (editor) {
-        for (juce::MidiMessage *cur = messageLog.begin(); cur < messageLog.end(); cur++) {
+        editor->clearMessageBox();
+        for (int *cur = messageLog.begin(); cur < messageLog.end(); cur++) {
             editor->logMidiMessage(*cur);
         }
     }
-    
-    messageLog.clear();
 }
 
 //==============================================================================

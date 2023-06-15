@@ -59,9 +59,8 @@ public:
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JamsterScannerAudioProcessor)
-        juce::Array<juce::MidiMessage> messageLog;
 
-    juce::AudioPlayHead::CurrentPositionInfo info; // The last updated position
+    juce::Array<int> messageLog;
 
     void handleAsyncUpdate() override;
 };
