@@ -35,11 +35,15 @@ private:
     // access the processor object that created it.
     JamsterScannerAudioProcessor& processor;
 
+    juce::TextEditor inputNotesMessageBox;
+    juce::TextEditor inputChordMessageBox;
     CustomMidiKeyboardComponent keyboardComponent;
-    juce::Label metronomeLabel;
-    juce::ToggleButton metronomeButton;
-    juce::TextButton resetButton;
-    juce::TextEditor midiMessagesBox;
+    juce::Slider octTransposeSlider;
+    juce::Slider stTransposeSlider;
+    juce::TextEditor outputNotesMessageBox;
+    juce::TextEditor outputChordMessageBox;
+    
+    
 
     void writeLog(const juce::String&);
 
