@@ -37,11 +37,12 @@ private:
 
     juce::TextEditor inputNotesMessageBox;
     juce::TextEditor inputChordMessageBox;
-    CustomMidiKeyboardComponent keyboardComponent;
+    CustomMidiKeyboardComponent inputKeyboardComponent;
     juce::Slider octTransposeSlider;
     juce::Slider stTransposeSlider;
     juce::TextEditor outputNotesMessageBox;
     juce::TextEditor outputChordMessageBox;
+    CustomMidiKeyboardComponent outputKeyboardComponent;
     
     
 

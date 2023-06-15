@@ -13,7 +13,8 @@
 
 //==============================================================================
 JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterScannerAudioProcessor& p)
-    : AudioProcessorEditor(&p), processor(p), keyboardComponent(p.keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
+    : AudioProcessorEditor(&p), processor(p), inputKeyboardComponent(p.inputKeyboardState, juce::MidiKeyboardComponent::horizontalKeyboard),
+    outputKeyboardComponent(p.outputKeyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
 {
     inputNotesMessageBox.setMultiLine(false);
     inputNotesMessageBox.setReadOnly(true);
@@ -45,11 +46,11 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     outputNotesMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
     addAndMakeVisible(outputNotesMessageBox);
 
-    keyboardComponent.setKeyWidth(19.0f);
-    keyboardComponent.setAvailableRange(0, 120);
-    keyboardComponent.setOctaveForMiddleC(5);
-    keyboardComponent.setLowestVisibleKey(30);
-    addAndMakeVisible(keyboardComponent);
+    inputKeyboardComponent.setKeyWidth(19.0f);
+    inputKeyboardComponent.setAvailableRange(0, 120);
+    inputKeyboardComponent.setOctaveForMiddleC(5);
+    inputKeyboardComponent.setLowestVisibleKey(30);
+    addAndMakeVisible(inputKeyboardComponent);
 
     octTransposeSlider.setRange(-10, 10, 1);
     addAndMakeVisible(octTransposeSlider);
@@ -66,6 +67,12 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     outputChordMessageBox.setColour(juce::TextEditor::outlineColourId, juce::Colour(0x1c000000));
     outputChordMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
     addAndMakeVisible(outputChordMessageBox);
+
+    outputKeyboardComponent.setKeyWidth(19.0f);
+    outputKeyboardComponent.setAvailableRange(0, 120);
+    outputKeyboardComponent.setOctaveForMiddleC(5);
+    outputKeyboardComponent.setLowestVisibleKey(30);
+    addAndMakeVisible(outputKeyboardComponent);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -104,7 +111,7 @@ void JamsterScannerAudioProcessorEditor::resized()
         .reduced(8); // Divide the width in half for two equal boxes
 
     // Calculate the bounds for the keyboard component
-    juce::Rectangle<int> keyboardBounds = getLocalBounds()
+    juce::Rectangle<int> inputKeyboardBounds = getLocalBounds()
         .removeFromTop(keyboardHeight)
         .withY(inputNotesBoxBounds.getBottom())
         .reduced(8);
@@ -113,7 +120,7 @@ void JamsterScannerAudioProcessorEditor::resized()
     juce::Rectangle<int> octSliderBounds = getLocalBounds()
         .removeFromTop(sliderBoxHeight)
         .withWidth(sliderBoxWidth)
-        .withY(keyboardBounds.getBottom())
+        .withY(inputKeyboardBounds.getBottom())
         .withX(getLocalBounds().getCentreX() - sliderBoxWidth / 2)
         .reduced(8);
 
@@ -139,14 +146,21 @@ void JamsterScannerAudioProcessorEditor::resized()
         .withY(stSliderBounds.getBottom())
         .reduced(8); // Divide the width in half for two equal boxes
 
+    // Calculate the bounds for the keyboard component
+    juce::Rectangle<int> outputKeyboardBounds = getLocalBounds()
+        .removeFromTop(keyboardHeight)
+        .withY(outputNotesBoxBounds.getBottom())
+        .reduced(8);
+
     // Set the bounds for the left text box, right text box, and keyboard component
     inputNotesMessageBox.setBounds(inputNotesBoxBounds);
     inputChordMessageBox.setBounds(inputChordBoxBounds);
-    keyboardComponent.setBounds(keyboardBounds);
+    inputKeyboardComponent.setBounds(inputKeyboardBounds);
     octTransposeSlider.setBounds(octSliderBounds);
     stTransposeSlider.setBounds(stSliderBounds);
     outputNotesMessageBox.setBounds(outputNotesBoxBounds);
     outputChordMessageBox.setBounds(outputChordBoxBounds);
+    outputKeyboardComponent.setBounds(outputKeyboardBounds);
 }
 
 void JamsterScannerAudioProcessorEditor::logMidiMessage(const int& message)
