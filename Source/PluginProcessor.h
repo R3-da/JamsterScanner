@@ -55,13 +55,21 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
+    void setOctTransposeValue(int transposeValue);
+    void setStTransposeValue(int transposeValue);
+
     juce::MidiKeyboardState inputKeyboardState;
     juce::MidiKeyboardState outputKeyboardState;
+
+    int octTransposeValue = 0;
+    int stTransposeValue = 0;
+
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JamsterScannerAudioProcessor)
 
-    juce::Array<int> messageLog;
+    juce::Array<int> inputMessageLog;
+    juce::Array<int> outputMessageLog;
 
     void handleAsyncUpdate() override;
 };

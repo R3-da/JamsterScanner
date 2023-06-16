@@ -165,22 +165,28 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     inputKeyboardState.processNextMidiBuffer(midi, 0, buffer.getNumSamples(), true);
 
     bool update = false;
-    juce::MidiMessage msg;
+    juce::MidiMessage inputMsg;
+    juce::MidiMessage outputMsg;
     juce::MidiBuffer outputMidiBuffer;
 
     // Get incomming midi messages and log them
     int ignore;
-    for (juce::MidiBuffer::Iterator it(midi); it.getNextEvent(msg, ignore);)
+    for (juce::MidiBuffer::Iterator it(midi); it.getNextEvent(inputMsg, ignore);)
     {
-        if (msg.isNoteOn() || msg.isNoteOff()) {
-            if (msg.isNoteOn()) {
-                messageLog.add(msg.getNoteNumber());
-                
+        outputMsg = inputMsg;
+        outputMsg.setNoteNumber(inputMsg.getNoteNumber() + (octTransposeValue * 12) + stTransposeValue);
+
+        if (inputMsg.isNoteOn() || inputMsg.isNoteOff()) {
+            if (inputMsg.isNoteOn()) {
+                inputMessageLog.add(inputMsg.getNoteNumber());
+                outputMessageLog.add(outputMsg.getNoteNumber());
             }
-            else if (msg.isNoteOff()) {
-                messageLog.remove(messageLog.indexOf(msg.getNoteNumber()));
+            else if (inputMsg.isNoteOff()) {
+                inputMessageLog.remove(inputMessageLog.indexOf(inputMsg.getNoteNumber()));
+                outputMessageLog.remove(outputMessageLog.indexOf(outputMsg.getNoteNumber()));
             }
-            outputMidiBuffer.addEvent(msg, outputMidiBuffer.getNumEvents() - 1);
+            
+            outputMidiBuffer.addEvent(outputMsg, outputMidiBuffer.getNumEvents() - 1);
             update = true;
         }
     }
@@ -219,18 +225,34 @@ void JamsterScannerAudioProcessor::setStateInformation (const void* data, int si
     // whose contents will have been created by the getStateInformation() call.
 }
 
+void JamsterScannerAudioProcessor::setOctTransposeValue(int transposeValue)
+{
+    octTransposeValue = transposeValue;
+}
+
+void JamsterScannerAudioProcessor::setStTransposeValue(int transposeValue)
+{
+    stTransposeValue = transposeValue;
+}
+
 void JamsterScannerAudioProcessor::handleAsyncUpdate()
 {
     JamsterScannerAudioProcessorEditor *editor =
         dynamic_cast<JamsterScannerAudioProcessorEditor*>(getActiveEditor());
 
     if (editor) {
-        editor->clearMessageBox();
-        for (int *cur = messageLog.begin(); cur < messageLog.end(); cur++) {
-            editor->logMidiMessage(*cur);
+        editor->clearInputMessageBox();
+        for (int *cur = inputMessageLog.begin(); cur < inputMessageLog.end(); cur++) {
+            editor->logInputMidiMessage(*cur);
+        }
+        editor->clearOutputMessageBox();
+        for (int* cur = outputMessageLog.begin(); cur < outputMessageLog.end(); cur++) {
+            editor->logOutputMidiMessage(*cur);
         }
     }
 }
+
+
 
 //==============================================================================
 // This creates new instances of the plugin..

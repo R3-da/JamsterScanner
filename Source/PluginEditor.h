@@ -17,7 +17,8 @@
 //==============================================================================
 /**
 */
-class JamsterScannerAudioProcessorEditor : public juce::AudioProcessorEditor
+class JamsterScannerAudioProcessorEditor : public juce::AudioProcessorEditor,
+    public juce::Slider::Listener
 {
 public:
     JamsterScannerAudioProcessorEditor(JamsterScannerAudioProcessor&);
@@ -27,8 +28,15 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    void logMidiMessage(const int&);
-    void clearMessageBox();
+    void logInputMidiMessage(const int&);
+    void clearInputMessageBox();
+
+    void logOutputMidiMessage(const int&);
+    void clearOutputMessageBox();
+
+    void addListeners(juce::Slider::Listener*);
+
+    void sliderValueChanged(juce::Slider* slider) override;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -43,10 +51,9 @@ private:
     juce::TextEditor outputNotesMessageBox;
     juce::TextEditor outputChordMessageBox;
     CustomMidiKeyboardComponent outputKeyboardComponent;
-    
-    
 
-    void writeLog(const juce::String&);
+    void inputWriteLog(const juce::String&);
+    void outputWriteLog(const juce::String&);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JamsterScannerAudioProcessorEditor)
 };

@@ -53,9 +53,11 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     addAndMakeVisible(inputKeyboardComponent);
 
     octTransposeSlider.setRange(-10, 10, 1);
+    octTransposeSlider.setTextValueSuffix(" Oct");
     addAndMakeVisible(octTransposeSlider);
 
     stTransposeSlider.setRange(-12, 12, 1);
+    stTransposeSlider.setTextValueSuffix(" St");
     addAndMakeVisible(stTransposeSlider);
 
     outputChordMessageBox.setMultiLine(false);
@@ -74,6 +76,7 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     outputKeyboardComponent.setLowestVisibleKey(30);
     addAndMakeVisible(outputKeyboardComponent);
 
+    addListeners(this);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize(700, 500);
@@ -163,18 +166,47 @@ void JamsterScannerAudioProcessorEditor::resized()
     outputKeyboardComponent.setBounds(outputKeyboardBounds);
 }
 
-void JamsterScannerAudioProcessorEditor::logMidiMessage(const int& message)
+void JamsterScannerAudioProcessorEditor::logInputMidiMessage(const int& message)
 {
-    writeLog(juce::MidiMessage::getMidiNoteName(message, true, true, 5));
+    inputWriteLog(juce::MidiMessage::getMidiNoteName(message, true, true, 5));
 }
 
-void JamsterScannerAudioProcessorEditor::clearMessageBox() {
+void JamsterScannerAudioProcessorEditor::clearInputMessageBox() {
     inputNotesMessageBox.clear();
+}
+
+void JamsterScannerAudioProcessorEditor::logOutputMidiMessage(const int& message)
+{
+    outputWriteLog(juce::MidiMessage::getMidiNoteName(message, true, true, 5));
+}
+
+void JamsterScannerAudioProcessorEditor::clearOutputMessageBox() {
+    outputNotesMessageBox.clear();
+}
+
+void JamsterScannerAudioProcessorEditor::addListeners(juce::Slider::Listener* listener) {
+    octTransposeSlider.addListener(listener);
+    stTransposeSlider.addListener(listener);
+}
+
+void JamsterScannerAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
+{
+    if (slider == &octTransposeSlider) {
+        processor.setOctTransposeValue((int)octTransposeSlider.getValue());
+    }
+    if (slider == &stTransposeSlider) {
+        processor.setStTransposeValue((int)stTransposeSlider.getValue()) ;
+    }
 }
 
 //==============================================================================
 
-void JamsterScannerAudioProcessorEditor::writeLog(const juce::String& m)
+void JamsterScannerAudioProcessorEditor::inputWriteLog(const juce::String& m)
 {
     inputNotesMessageBox.insertTextAtCaret(" " + m + " ");
+}
+
+void JamsterScannerAudioProcessorEditor::outputWriteLog(const juce::String& m)
+{
+    outputNotesMessageBox.insertTextAtCaret(" " + m + " ");
 }
