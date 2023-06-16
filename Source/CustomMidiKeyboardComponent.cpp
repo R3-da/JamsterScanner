@@ -20,7 +20,7 @@ void CustomMidiKeyboardComponent::drawWhiteNote(int midiNoteNumber, juce::Graphi
     auto c = juce::Colours::transparentWhite;
 
     // override textColour
-    textColour = juce::Colours::grey;
+    textColour = juce::Colours::lightgrey;
 
     if (isDown)  c = findColour(keyDownOverlayColourId);
     if (isOver)  c = c.overlaidWith(findColour(mouseOverKeyOverlayColourId));
