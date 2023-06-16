@@ -96,7 +96,8 @@ void JamsterScannerAudioProcessor::changeProgramName (int index, const juce::Str
 //==============================================================================
 void JamsterScannerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    keyboardState.reset();
+    inputKeyboardState.reset();
+    outputKeyboardState.reset();
     reset();
 }
 
@@ -104,7 +105,8 @@ void JamsterScannerAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
-    keyboardState.reset();
+    inputKeyboardState.reset();
+    outputKeyboardState.reset();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -160,22 +162,39 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         // ..do something to the data...
     }
 
-    keyboardState.processNextMidiBuffer(midi, 0, buffer.getNumSamples(), true);
+    inputKeyboardState.processNextMidiBuffer(midi, 0, buffer.getNumSamples(), true);
 
     bool update = false;
-    juce::MidiMessage msg;
+    juce::MidiMessage inputMsg;
+    juce::MidiMessage outputMsg;
+    juce::MidiBuffer outputMidiBuffer;
 
     // Get incomming midi messages and log them
-
     int ignore;
-    for (juce::MidiBuffer::Iterator it(midi); it.getNextEvent(msg, ignore);)
+    for (juce::MidiBuffer::Iterator it(midi); it.getNextEvent(inputMsg, ignore);)
     {
-        if (msg.isNoteOn() || msg.isNoteOff()) {
-            messageLog.add(msg);
+        outputMsg = inputMsg;
+        outputMsg.setNoteNumber(inputMsg.getNoteNumber() + (octTransposeValue * 12) + stTransposeValue);
+
+        if (inputMsg.isNoteOn() || inputMsg.isNoteOff()) {
+            if (inputMsg.isNoteOn()) {
+                inputMessageLog.add(inputMsg.getNoteNumber());
+                outputMessageLog.add(outputMsg.getNoteNumber());
+            }
+            else if (inputMsg.isNoteOff()) {
+                inputMessageLog.remove(inputMessageLog.indexOf(inputMsg.getNoteNumber()));
+                outputMessageLog.remove(outputMessageLog.indexOf(outputMsg.getNoteNumber()));
+            }
+            
+            outputMidiBuffer.addEvent(outputMsg, outputMidiBuffer.getNumEvents() - 1);
             update = true;
         }
     }
-    //midi.clear();
+
+    outputKeyboardState.processNextMidiBuffer(outputMidiBuffer, 0, buffer.getNumSamples(), true);
+
+    midi.clear();
+    outputMidiBuffer.clear();
 
     if (update) triggerAsyncUpdate();
 }
@@ -206,19 +225,34 @@ void JamsterScannerAudioProcessor::setStateInformation (const void* data, int si
     // whose contents will have been created by the getStateInformation() call.
 }
 
+void JamsterScannerAudioProcessor::setOctTransposeValue(int transposeValue)
+{
+    octTransposeValue = transposeValue;
+}
+
+void JamsterScannerAudioProcessor::setStTransposeValue(int transposeValue)
+{
+    stTransposeValue = transposeValue;
+}
+
 void JamsterScannerAudioProcessor::handleAsyncUpdate()
 {
     JamsterScannerAudioProcessorEditor *editor =
         dynamic_cast<JamsterScannerAudioProcessorEditor*>(getActiveEditor());
 
     if (editor) {
-        for (juce::MidiMessage *cur = messageLog.begin(); cur < messageLog.end(); cur++) {
-            editor->logMidiMessage(*cur);
+        editor->clearInputMessageBox();
+        for (int *cur = inputMessageLog.begin(); cur < inputMessageLog.end(); cur++) {
+            editor->logInputMidiMessage(*cur);
+        }
+        editor->clearOutputMessageBox();
+        for (int* cur = outputMessageLog.begin(); cur < outputMessageLog.end(); cur++) {
+            editor->logOutputMidiMessage(*cur);
         }
     }
-    
-    messageLog.clear();
 }
+
+
 
 //==============================================================================
 // This creates new instances of the plugin..
