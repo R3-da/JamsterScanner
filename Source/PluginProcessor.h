@@ -70,6 +70,7 @@ private:
 
     juce::Array<int> inputMessageLog;
     juce::Array<int> outputMessageLog;
+    std::unique_ptr<juce::MidiOutput> midiOutputDevice;
 
     void handleAsyncUpdate() override;
 };
