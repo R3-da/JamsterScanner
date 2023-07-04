@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "CustomMidiKeyboardComponent.h"
+#include "ChordDetector.h"
 
 //==============================================================================
 /**
@@ -30,6 +31,9 @@ public:
 
     void logInputNotes(const int&);
     void clearInputNotes();
+
+    void logInputChord(const int&);
+    void clearInputChord();
 
     void logOutputNotes(const int&);
     void clearOutputNotes();
@@ -52,8 +56,12 @@ private:
     juce::TextEditor outputChordMessageBox;
     CustomMidiKeyboardComponent outputKeyboardComponent;
 
+    ChordDetector chordDetector;
+
     void inputWriteNotes(const juce::String&);
     void outputWriteNotes(const juce::String&);
+    void inputWriteChord(const juce::Array<NoteInterval> m);
+    void outputWriteChord(const juce::String&);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JamsterScannerAudioProcessorEditor)
 };
