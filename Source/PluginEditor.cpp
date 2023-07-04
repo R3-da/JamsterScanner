@@ -166,21 +166,21 @@ void JamsterScannerAudioProcessorEditor::resized()
     outputKeyboardComponent.setBounds(outputKeyboardBounds);
 }
 
-void JamsterScannerAudioProcessorEditor::logInputMidiMessage(const int& message)
+void JamsterScannerAudioProcessorEditor::logInputNotes(const int& message)
 {
-    inputWriteLog(juce::MidiMessage::getMidiNoteName(message, true, true, 5));
+    inputWriteNotes(juce::MidiMessage::getMidiNoteName(message, true, true, 5));
 }
 
-void JamsterScannerAudioProcessorEditor::clearInputMessageBox() {
+void JamsterScannerAudioProcessorEditor::clearInputNotes() {
     inputNotesMessageBox.clear();
 }
 
-void JamsterScannerAudioProcessorEditor::logOutputMidiMessage(const int& message)
+void JamsterScannerAudioProcessorEditor::logOutputNotes(const int& message)
 {
-    outputWriteLog(juce::MidiMessage::getMidiNoteName(message, true, true, 5));
+    outputWriteNotes(juce::MidiMessage::getMidiNoteName(message, true, true, 5));
 }
 
-void JamsterScannerAudioProcessorEditor::clearOutputMessageBox() {
+void JamsterScannerAudioProcessorEditor::clearOutputNotes() {
     outputNotesMessageBox.clear();
 }
 
@@ -202,12 +202,12 @@ void JamsterScannerAudioProcessorEditor::sliderValueChanged(juce::Slider* slider
 
 //==============================================================================
 
-void JamsterScannerAudioProcessorEditor::inputWriteLog(const juce::String& m)
+void JamsterScannerAudioProcessorEditor::inputWriteNotes(const juce::String& m)
 {
     inputNotesMessageBox.insertTextAtCaret(" " + m + " ");
 }
 
-void JamsterScannerAudioProcessorEditor::outputWriteLog(const juce::String& m)
+void JamsterScannerAudioProcessorEditor::outputWriteNotes(const juce::String& m)
 {
     outputNotesMessageBox.insertTextAtCaret(" " + m + " ");
 }

@@ -28,11 +28,11 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    void logInputMidiMessage(const int&);
-    void clearInputMessageBox();
+    void logInputNotes(const int&);
+    void clearInputNotes();
 
-    void logOutputMidiMessage(const int&);
-    void clearOutputMessageBox();
+    void logOutputNotes(const int&);
+    void clearOutputNotes();
 
     void addListeners(juce::Slider::Listener*);
 
@@ -52,8 +52,8 @@ private:
     juce::TextEditor outputChordMessageBox;
     CustomMidiKeyboardComponent outputKeyboardComponent;
 
-    void inputWriteLog(const juce::String&);
-    void outputWriteLog(const juce::String&);
+    void inputWriteNotes(const juce::String&);
+    void outputWriteNotes(const juce::String&);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JamsterScannerAudioProcessorEditor)
 };

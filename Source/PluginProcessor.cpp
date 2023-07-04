@@ -239,13 +239,13 @@ void JamsterScannerAudioProcessor::handleAsyncUpdate()
         dynamic_cast<JamsterScannerAudioProcessorEditor*>(getActiveEditor());
 
     if (editor) {
-        editor->clearInputMessageBox();
+        editor->clearInputNotes();
         for (int* cur = inputMessageLog.begin(); cur < inputMessageLog.end(); cur++) {
-            editor->logInputMidiMessage(*cur);
+            editor->logInputNotes(*cur);
         }
-        editor->clearOutputMessageBox();
+        editor->clearOutputNotes();
         for (int* cur = outputMessageLog.begin(); cur < outputMessageLog.end(); cur++) {
-            editor->logOutputMidiMessage(*cur);
+            editor->logOutputNotes(*cur);
         }
     }
 }
