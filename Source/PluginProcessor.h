@@ -63,7 +63,6 @@ public:
 
     int octTransposeValue = 0;
     int stTransposeValue = 0;
-
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JamsterScannerAudioProcessor)
