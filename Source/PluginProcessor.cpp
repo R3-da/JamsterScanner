@@ -155,10 +155,7 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     inputKeyboardState.processNextMidiBuffer(midi, 0, buffer.getNumSamples(), true);
 
     bool update = false;
-    juce::MidiMessage inputMsg;
-    juce::MidiMessage outputMsg;
-    juce::MidiBuffer outputMidiBuffer;
-
+    
     // Get incomming midi messages and log them
     int ignore;
     for (juce::MidiBuffer::Iterator it(midi); it.getNextEvent(inputMsg, ignore);)
@@ -175,9 +172,8 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
                 inputMessageLog.remove(inputMessageLog.indexOf(inputMsg.getNoteNumber()));
                 outputMessageLog.remove(outputMessageLog.indexOf(outputMsg.getNoteNumber()));
             }
-            
+            triggerAsyncUpdate();
             outputMidiBuffer.addEvent(outputMsg, outputMidiBuffer.getNumEvents() - 1);
-            update = true;
         }
     }
 
@@ -191,13 +187,6 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     */
     midi.clear();
     outputMidiBuffer.clear();
-
-    if (update) {
-        triggerAsyncUpdate();
-    }
-    else {
-        return;
-    }
 }
 
 //==============================================================================
@@ -234,6 +223,13 @@ void JamsterScannerAudioProcessor::setOctTransposeValue(int transposeValue)
 void JamsterScannerAudioProcessor::setStTransposeValue(int transposeValue)
 {
     stTransposeValue = transposeValue;
+}
+
+void JamsterScannerAudioProcessor::sliderChanged()
+{
+    outputKeyboardState.allNotesOff(0);
+    outputMessageLog.clear();
+    triggerAsyncUpdate();
 }
 
 

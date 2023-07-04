@@ -191,6 +191,7 @@ void JamsterScannerAudioProcessorEditor::addListeners(juce::Slider::Listener* li
 
 void JamsterScannerAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
+    processor.sliderChanged();
     if (slider == &octTransposeSlider) {
         processor.setOctTransposeValue((int)octTransposeSlider.getValue());
     }
