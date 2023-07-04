@@ -58,18 +58,24 @@ public:
     void setOctTransposeValue(int transposeValue);
     void setStTransposeValue(int transposeValue);
 
+    void sliderChanged();
+
     juce::MidiKeyboardState inputKeyboardState;
     juce::MidiKeyboardState outputKeyboardState;
 
     int octTransposeValue = 0;
     int stTransposeValue = 0;
-
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JamsterScannerAudioProcessor)
 
+    juce::MidiMessage inputMsg;
+    juce::MidiMessage outputMsg;
+
     juce::Array<int> inputMessageLog;
     juce::Array<int> outputMessageLog;
+    //std::unique_ptr<juce::MidiOutput> midiOutputDevice;
+    juce::MidiBuffer outputMidiBuffer;
 
     void handleAsyncUpdate() override;
 };
