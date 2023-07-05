@@ -235,7 +235,11 @@ void JamsterScannerAudioProcessorEditor::inputWriteChord(const int m)
         inputChordMessageBox.insertTextAtCaret(" " + juce::String(itemInterval) + " ");
     }
     */
-    inputChordMessageBox.insertTextAtCaret(" " + juce::String(m) + " ");
+    if (m != -1)
+    {
+        inputChordMessageBox.insertTextAtCaret(" " + chordDetector.chordsList[m].name + " ");
+    }
+    
 }
 
 void JamsterScannerAudioProcessorEditor::outputWriteNotes(const juce::String& m)
