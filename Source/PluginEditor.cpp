@@ -120,10 +120,29 @@ void JamsterScannerAudioProcessorEditor::resized()
         .reduced(8);
 
     // Calculate the bounds for the keyboard component
+    juce::Rectangle<int> outputKeyboardBounds = getLocalBounds()
+        .removeFromBottom(keyboardHeight) // Remove from the bottom instead of the top
+        .reduced(8);
+
+    // Calculate the bounds for the left text box
+    juce::Rectangle<int> outputNotesBoxBounds = getLocalBounds()
+        .withHeight(textBoxHeight)
+        .removeFromLeft(getWidth() / 2)
+        .withY(outputKeyboardBounds.getY() - textBoxHeight - 8)
+        .reduced(8); // Divide the width in half for two equal boxes
+
+    // Calculate the bounds for the right text box
+    juce::Rectangle<int> outputChordBoxBounds = getLocalBounds()
+        .withHeight(textBoxHeight)
+        .removeFromRight(getWidth() / 2)
+        .withY(outputKeyboardBounds.getY() - textBoxHeight - 8)
+        .reduced(8); // Divide the width in half for two equal boxes
+
+    // Calculate the bounds for the keyboard component
     juce::Rectangle<int> octSliderBounds = getLocalBounds()
         .removeFromTop(sliderBoxHeight)
         .withWidth(sliderBoxWidth)
-        .withY(inputKeyboardBounds.getBottom())
+        .withY((outputNotesBoxBounds.getY() - (outputNotesBoxBounds.getY() - inputKeyboardBounds.getY()) / 2) - sliderBoxHeight / 2)
         .withX(getLocalBounds().getCentreX() - sliderBoxWidth / 2)
         .reduced(8);
 
@@ -131,28 +150,8 @@ void JamsterScannerAudioProcessorEditor::resized()
     juce::Rectangle<int> stSliderBounds = getLocalBounds()
         .removeFromTop(sliderBoxHeight)
         .withWidth(sliderBoxWidth)
-        .withY(octSliderBounds.getBottom())
+        .withY((outputNotesBoxBounds.getY() - (outputNotesBoxBounds.getY() - inputKeyboardBounds.getY()) / 2) + sliderBoxHeight / 2)
         .withX(getLocalBounds().getCentreX() - sliderBoxWidth / 2)
-        .reduced(8);   
-
-    // Calculate the bounds for the left text box
-    juce::Rectangle<int> outputNotesBoxBounds = getLocalBounds()
-        .withHeight(textBoxHeight)
-        .removeFromLeft(getWidth() / 2)
-        .withY(stSliderBounds.getBottom())
-        .reduced(8); // Divide the width in half for two equal boxes
-
-    // Calculate the bounds for the right text box
-    juce::Rectangle<int> outputChordBoxBounds = getLocalBounds()
-        .withHeight(textBoxHeight)
-        .removeFromRight(getWidth() / 2)
-        .withY(stSliderBounds.getBottom())
-        .reduced(8); // Divide the width in half for two equal boxes
-
-    // Calculate the bounds for the keyboard component
-    juce::Rectangle<int> outputKeyboardBounds = getLocalBounds()
-        .removeFromTop(keyboardHeight)
-        .withY(outputNotesBoxBounds.getBottom())
         .reduced(8);
 
     // Set the bounds for the left text box, right text box, and keyboard component
@@ -197,6 +196,16 @@ void JamsterScannerAudioProcessorEditor::clearOutputNotes() {
     outputNotesMessageBox.clear();
 }
 
+void JamsterScannerAudioProcessorEditor::logOutputChord(const juce::Array<int> myNumbers)
+{
+    auto outputTest2 = chordDetector.getChordsIndexStartPoint(myNumbers);
+    outputWriteChord(outputTest2);
+}
+
+void JamsterScannerAudioProcessorEditor::clearOutputChord() {
+    outputChordMessageBox.clear();
+}
+
 void JamsterScannerAudioProcessorEditor::addListeners(juce::Slider::Listener* listener) {
     octTransposeSlider.addListener(listener);
     stTransposeSlider.addListener(listener);
@@ -220,25 +229,16 @@ void JamsterScannerAudioProcessorEditor::inputWriteNotes(const juce::String& m)
     inputNotesMessageBox.insertTextAtCaret(" " + m + " ");
 }
 
-void JamsterScannerAudioProcessorEditor::inputWriteChord(const juce::Array<ChordIndexStartpoint> m)
+void JamsterScannerAudioProcessorEditor::inputWriteChord(const juce::Array<ChordIndexStartpoint>& m)
 {
-    /*
-    for (const NoteInterval& item : m)
-    {
-        int itemInterval = item.interval;
-        // Do something with the intervalValue
-        inputChordMessageBox.insertTextAtCaret(" " + juce::String(itemInterval) + " ");
-    }
-    */
     juce::String noteName;
     for (int i = 0; i < m.size(); ++i)
     {
         noteName = juce::MidiMessage::getMidiNoteName(chordDetector.getNoteIndex(m[i].startpoint), true, true, 5);
         noteName = noteName.dropLastCharacters(1);
         inputChordMessageBox.insertTextAtCaret(noteName);
-        inputChordMessageBox.insertTextAtCaret(chordDetector.chordsList[m[i].index].name + " ");
+        inputChordMessageBox.insertTextAtCaret(chordDetector.chordsList[m[i].index].postfix + " ");
     }
-    
 }
 
 void JamsterScannerAudioProcessorEditor::outputWriteNotes(const juce::String& m)
@@ -246,7 +246,14 @@ void JamsterScannerAudioProcessorEditor::outputWriteNotes(const juce::String& m)
     outputNotesMessageBox.insertTextAtCaret(" " + m + " ");
 }
 
-void JamsterScannerAudioProcessorEditor::outputWriteChord(const juce::String& m)
+void JamsterScannerAudioProcessorEditor::outputWriteChord(const juce::Array<ChordIndexStartpoint>& m)
 {
-    outputChordMessageBox.insertTextAtCaret(" " + m + " ");
+    juce::String noteName;
+    for (int i = 0; i < m.size(); ++i)
+    {
+        noteName = juce::MidiMessage::getMidiNoteName(chordDetector.getNoteIndex(m[i].startpoint), true, true, 5);
+        noteName = noteName.dropLastCharacters(1);
+        outputChordMessageBox.insertTextAtCaret(noteName);
+        outputChordMessageBox.insertTextAtCaret(chordDetector.chordsList[m[i].index].postfix + " ");
+    }
 }

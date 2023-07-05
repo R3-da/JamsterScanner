@@ -11,57 +11,41 @@
 #include <JuceHeader.h>
 #include "ChordDetector.h"
 
-juce::Array<ChordData> ChordDetector::loadChordDataFromFile()
-{
-    juce::Array<ChordData> chordsList;
 
-    // Load chord data from JSON file
-    juce::File jsonFile(juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory().getChildFile("chords.json"));
-    juce::String jsonString;
-    jsonString = jsonFile.loadFileAsString();
-
-    // Parse JSON string
-    juce::var jsonData = juce::JSON::parse(jsonString);
-
-    // Check if parsed data is an array
-    if (jsonData.isArray())
-    {
-        // Convert var array to juce::Array
-        juce::Array<juce::var>* chordArray = jsonData.getArray();
-
-        
-        // Iterate through the chord array
-        for (const juce::var& chordVar : *chordArray)
-        {
-            // Extract chord data from the object
-            juce::String name = chordVar["name"].toString();
-            juce::String postfix = chordVar["postfix"].toString();
-            juce::Array<juce::var> intervalVarArray = chordVar["interval"];
-            
-            // Convert interval var array to juce::Array<int>
-            juce::Array<int> intervalArray;
-            for (int i = 0; i < intervalVarArray[0].size(); ++i)
-            {
-                if (intervalVarArray[0][i].isInt())
-                {
-                    intervalArray.add(intervalVarArray[0][i]);
-                }
-            }
-
-            // Create ChordData object and add it to chordsList
-            ChordData chordData{ name, postfix, intervalArray };
-            chordsList.add(chordData);
-        }
-    }
-
-    return chordsList;
-}
 
 
 //==============================================================================
 ChordDetector::ChordDetector()
 {
-
+    chordsList.add({ "powerchord", "5", { 7, 5 } });
+    chordsList.add({ "major", "", { 4, 3, 5 } });
+    chordsList.add({ "minor", "m", { 3, 4, 5 } });
+    chordsList.add({ "augmented", "aug", { 4, 4, 4 } });
+    chordsList.add({ "diminished", "dim", { 3, 3, 6 } });
+    chordsList.add({ "suspended", "sus2", { 2, 5, 5 } });
+    chordsList.add({ "suspended", "sus4", { 5, 2, 5 } });
+    chordsList.add({ "7major(short)", "7maj", { 7, 4, 1 } });
+    chordsList.add({ "7(short)", "7", { 7, 3, 2 } });
+    chordsList.add({ "6major", "6maj", { 4, 3, 2, 3 } });
+    chordsList.add({ "6minor", "6min", { 3, 4, 2, 3 } });
+    chordsList.add({ "7diminished", "7dim", { 3, 3, 3, 3 } });
+    chordsList.add({ "7major", "7maj", { 4, 3, 4, 1 } });
+    chordsList.add({ "7minor", "7min", { 3, 4, 3, 2 } });
+    chordsList.add({ "7augmented", "7aug", { 4, 4, 2, 2 } });
+    chordsList.add({ "7half-diminished", "7hdim", { 3, 3, 4, 2 } });
+    chordsList.add({ "7dominant", "7dom", { 4, 3, 3, 2 } });
+    chordsList.add({ "7minor-major", "7minmaj", { 3, 4, 4, 1 } });
+    chordsList.add({ "7augmented-major", "7augmaj", { 4, 4, 3, 1 } });
+    chordsList.add({ "9add", "9add", { 2, 2, 3, 5 } });
+    chordsList.add({ "9", "9", { 2, 2, 3, 3, 2 } });
+    chordsList.add({ "9minor", "9min", { 2, 1, 4, 3, 2 } });
+    chordsList.add({ "9major", "9maj", { 2, 2, 3, 4, 1 } });
+    chordsList.add({ "b9", "9-", { 1, 3, 3, 3, 2 } });
+    chordsList.add({ "#9", "9+", { 3, 1, 3, 3, 2 } });
+    chordsList.add({ "11(short)", "11", { 4, 1, 2, 3, 2 } });
+    chordsList.add({ "11", "11", { 2, 2, 1, 2, 3, 2 } });
+    chordsList.add({ "13(short)", "13", { 4, 3, 2, 1, 2 } });
+    chordsList.add({ "13", "13", { 2, 2, 1, 2, 2, 1, 2 } });
 }
 
 ChordDetector::~ChordDetector()
@@ -118,7 +102,6 @@ juce::Array<NoteInterval> ChordDetector::getNotesIntervals(juce::Array<int> inpu
 
 int ChordDetector::getChordIndexByInterval(const juce::Array<int>& interval)
 {
-    chordsList = loadChordDataFromFile();
     for (int i = 0; i < chordsList.size(); ++i)
     {
         const ChordData& chord = chordsList[i];
@@ -134,6 +117,7 @@ int ChordDetector::getChordIndexByInterval(const juce::Array<int>& interval)
 juce::Array<ChordIndexStartpoint> ChordDetector::getChordsIndexStartPoint(juce::Array<int> inputMessageLog)
 {
     juce::Array<NoteInterval> notesIntervals = getNotesIntervals(inputMessageLog);
+    
     juce::Array<int> notes;
     juce::Array<int> interval;
     for (const NoteInterval& noteInterval : notesIntervals)
