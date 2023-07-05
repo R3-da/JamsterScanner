@@ -38,6 +38,9 @@ public:
     void logOutputNotes(const int&);
     void clearOutputNotes();
 
+    void logOutputChord(const juce::Array<int>);
+    void clearOutputChord();
+
     void addListeners(juce::Slider::Listener*);
 
     void sliderValueChanged(juce::Slider* slider) override;
@@ -60,8 +63,8 @@ private:
 
     void inputWriteNotes(const juce::String&);
     void outputWriteNotes(const juce::String&);
-    void inputWriteChord(const juce::Array<ChordIndexStartpoint> m);
-    void outputWriteChord(const juce::String&);
+    void inputWriteChord(const juce::Array<ChordIndexStartpoint>& m);
+    void outputWriteChord(const juce::Array<ChordIndexStartpoint>& m);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JamsterScannerAudioProcessorEditor)
 };
