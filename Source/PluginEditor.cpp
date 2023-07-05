@@ -180,8 +180,13 @@ void JamsterScannerAudioProcessorEditor::logInputChord(const juce::Array<int> my
     //inputWriteChord(juce::MidiMessage::getMidiNoteName(message, true, true, 5));
     //juce::Array<int> myNumbers = { 60, 64, 67 };
     auto outputTest = chordDetector.getNotesIntervals(myNumbers);
-    //int outputTest2 = chordDetector.getChordIndexByInterval(outputTest);
-    inputWriteChord(outputTest);
+    juce::Array<int> outputTestIntervals;
+    for (const NoteInterval& item : outputTest)
+    {
+        outputTestIntervals.add(item.interval);
+    }
+    int outputTest2 = chordDetector.getChordIndexByInterval(outputTestIntervals);
+    inputWriteChord(outputTest2);
 }
 
 void JamsterScannerAudioProcessorEditor::clearInputChord() {
@@ -220,16 +225,17 @@ void JamsterScannerAudioProcessorEditor::inputWriteNotes(const juce::String& m)
     inputNotesMessageBox.insertTextAtCaret(" " + m + " ");
 }
 
-void JamsterScannerAudioProcessorEditor::inputWriteChord(const juce::Array<NoteInterval> m)
+void JamsterScannerAudioProcessorEditor::inputWriteChord(const int m)
 {
+    /*
     for (const NoteInterval& item : m)
     {
-        
         int itemInterval = item.interval;
         // Do something with the intervalValue
         inputChordMessageBox.insertTextAtCaret(" " + juce::String(itemInterval) + " ");
     }
-    
+    */
+    inputChordMessageBox.insertTextAtCaret(" " + juce::String(m) + " ");
 }
 
 void JamsterScannerAudioProcessorEditor::outputWriteNotes(const juce::String& m)
