@@ -119,7 +119,6 @@ juce::Array<NoteInterval> ChordDetector::getNotesIntervals(juce::Array<int> inpu
 int ChordDetector::getChordIndexByInterval(const juce::Array<int>& interval)
 {
     chordsList = loadChordDataFromFile();
-    DBG(juce::String(chordsList[28].interval.size()));
     for (int i = 0; i < chordsList.size(); ++i)
     {
         const ChordData& chord = chordsList[i];
@@ -139,6 +138,7 @@ juce::Array<ChordIndexStartpoint> ChordDetector::getChordsIndexStartPoint(juce::
     juce::Array<int> interval;
     for (const NoteInterval& noteInterval : notesIntervals)
     {
+
         notes.add(noteInterval.note);
         interval.add(noteInterval.interval);
     }
