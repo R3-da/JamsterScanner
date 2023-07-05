@@ -230,9 +230,13 @@ void JamsterScannerAudioProcessorEditor::inputWriteChord(const juce::Array<Chord
         inputChordMessageBox.insertTextAtCaret(" " + juce::String(itemInterval) + " ");
     }
     */
+    juce::String noteName;
     for (int i = 0; i < m.size(); ++i)
     {
-        inputChordMessageBox.insertTextAtCaret(" " + m[i].startpoint + chordDetector.chordsList[m[i].index].name + " ");
+        noteName = juce::MidiMessage::getMidiNoteName(chordDetector.getNoteIndex(m[i].startpoint), true, true, 5);
+        noteName = noteName.dropLastCharacters(1);
+        inputChordMessageBox.insertTextAtCaret(noteName);
+        inputChordMessageBox.insertTextAtCaret(chordDetector.chordsList[m[i].index].name + " ");
     }
     
 }
