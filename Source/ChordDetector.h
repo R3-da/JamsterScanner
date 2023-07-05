@@ -43,8 +43,6 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    static juce::Array<ChordData> loadChordDataFromFile();
-
     int getNoteIndex(int noteNum);
 
     juce::Array<NoteInterval> getNotesIntervals(juce::Array<int> inputMessageLog);
