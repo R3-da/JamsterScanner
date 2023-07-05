@@ -32,7 +32,7 @@ public:
     void logInputNotes(const int&);
     void clearInputNotes();
 
-    void logInputChord(const int&);
+    void logInputChord(const juce::Array<int>);
     void clearInputChord();
 
     void logOutputNotes(const int&);

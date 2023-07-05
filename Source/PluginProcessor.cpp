@@ -242,10 +242,9 @@ void JamsterScannerAudioProcessor::handleAsyncUpdate()
         editor->clearInputNotes();
         editor->clearInputChord();
         for (int* cur = inputMessageLog.begin(); cur < inputMessageLog.end(); cur++) {
-            editor->logInputNotes(*cur);
-            editor->logInputChord(*cur);
+            editor->logInputNotes(*cur);            
         }
-
+        editor->logInputChord(inputMessageLog);
         editor->clearOutputNotes();
         for (int* cur = outputMessageLog.begin(); cur < outputMessageLog.end(); cur++) {
             editor->logOutputNotes(*cur);
