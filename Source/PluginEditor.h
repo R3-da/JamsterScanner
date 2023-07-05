@@ -60,7 +60,7 @@ private:
 
     void inputWriteNotes(const juce::String&);
     void outputWriteNotes(const juce::String&);
-    void inputWriteChord(const juce::Array<NoteInterval> m);
+    void inputWriteChord(const juce::Array<ChordIndexStartpoint> m);
     void outputWriteChord(const juce::String&);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(JamsterScannerAudioProcessorEditor)
