@@ -232,14 +232,6 @@ void JamsterScannerAudioProcessorEditor::inputWriteNotes(const juce::String& m)
 
 void JamsterScannerAudioProcessorEditor::inputWriteChord(const juce::Array<ChordIndexStartpoint>& m)
 {
-    /*
-    for (const NoteInterval& item : m)
-    {
-        int itemInterval = item.interval;
-        // Do something with the intervalValue
-        inputChordMessageBox.insertTextAtCaret(" " + juce::String(itemInterval) + " ");
-    }
-    */
     juce::String noteName;
     for (int i = 0; i < m.size(); ++i)
     {
@@ -248,7 +240,6 @@ void JamsterScannerAudioProcessorEditor::inputWriteChord(const juce::Array<Chord
         inputChordMessageBox.insertTextAtCaret(noteName);
         inputChordMessageBox.insertTextAtCaret(chordDetector.chordsList[m[i].index].postfix + " ");
     }
-    
 }
 
 void JamsterScannerAudioProcessorEditor::outputWriteNotes(const juce::String& m)
