@@ -134,6 +134,7 @@ int ChordDetector::getChordIndexByInterval(const juce::Array<int>& interval)
 juce::Array<ChordIndexStartpoint> ChordDetector::getChordsIndexStartPoint(juce::Array<int> inputMessageLog)
 {
     juce::Array<NoteInterval> notesIntervals = getNotesIntervals(inputMessageLog);
+    
     juce::Array<int> notes;
     juce::Array<int> interval;
     for (const NoteInterval& noteInterval : notesIntervals)
