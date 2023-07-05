@@ -17,6 +17,9 @@
             resource="0" file="Source/CustomMidiKeyboardComponent.cpp"/>
       <FILE id="yBj02O" name="CustomMidiKeyboardComponent.h" compile="0"
             resource="0" file="Source/CustomMidiKeyboardComponent.h"/>
+      <FILE id="fZ51xF" name="ChordDetector.cpp" compile="1" resource="0"
+            file="Source/ChordDetector.cpp"/>
+      <FILE id="AM7VQS" name="ChordDetector.h" compile="0" resource="0" file="Source/ChordDetector.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
