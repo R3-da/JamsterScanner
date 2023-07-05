@@ -120,10 +120,29 @@ void JamsterScannerAudioProcessorEditor::resized()
         .reduced(8);
 
     // Calculate the bounds for the keyboard component
+    juce::Rectangle<int> outputKeyboardBounds = getLocalBounds()
+        .removeFromBottom(keyboardHeight) // Remove from the bottom instead of the top
+        .reduced(8);
+
+    // Calculate the bounds for the left text box
+    juce::Rectangle<int> outputNotesBoxBounds = getLocalBounds()
+        .withHeight(textBoxHeight)
+        .removeFromLeft(getWidth() / 2)
+        .withY(outputKeyboardBounds.getY() - textBoxHeight - 8)
+        .reduced(8); // Divide the width in half for two equal boxes
+
+    // Calculate the bounds for the right text box
+    juce::Rectangle<int> outputChordBoxBounds = getLocalBounds()
+        .withHeight(textBoxHeight)
+        .removeFromRight(getWidth() / 2)
+        .withY(outputKeyboardBounds.getY() - textBoxHeight - 8)
+        .reduced(8); // Divide the width in half for two equal boxes
+
+    // Calculate the bounds for the keyboard component
     juce::Rectangle<int> octSliderBounds = getLocalBounds()
         .removeFromTop(sliderBoxHeight)
         .withWidth(sliderBoxWidth)
-        .withY(inputKeyboardBounds.getBottom())
+        .withY((outputNotesBoxBounds.getY() - (outputNotesBoxBounds.getY() - inputKeyboardBounds.getY()) / 2) - sliderBoxHeight / 2)
         .withX(getLocalBounds().getCentreX() - sliderBoxWidth / 2)
         .reduced(8);
 
@@ -131,28 +150,8 @@ void JamsterScannerAudioProcessorEditor::resized()
     juce::Rectangle<int> stSliderBounds = getLocalBounds()
         .removeFromTop(sliderBoxHeight)
         .withWidth(sliderBoxWidth)
-        .withY(octSliderBounds.getBottom())
+        .withY((outputNotesBoxBounds.getY() - (outputNotesBoxBounds.getY() - inputKeyboardBounds.getY()) / 2) + sliderBoxHeight / 2)
         .withX(getLocalBounds().getCentreX() - sliderBoxWidth / 2)
-        .reduced(8);   
-
-    // Calculate the bounds for the left text box
-    juce::Rectangle<int> outputNotesBoxBounds = getLocalBounds()
-        .withHeight(textBoxHeight)
-        .removeFromLeft(getWidth() / 2)
-        .withY(stSliderBounds.getBottom())
-        .reduced(8); // Divide the width in half for two equal boxes
-
-    // Calculate the bounds for the right text box
-    juce::Rectangle<int> outputChordBoxBounds = getLocalBounds()
-        .withHeight(textBoxHeight)
-        .removeFromRight(getWidth() / 2)
-        .withY(stSliderBounds.getBottom())
-        .reduced(8); // Divide the width in half for two equal boxes
-
-    // Calculate the bounds for the keyboard component
-    juce::Rectangle<int> outputKeyboardBounds = getLocalBounds()
-        .removeFromTop(keyboardHeight)
-        .withY(outputNotesBoxBounds.getBottom())
         .reduced(8);
 
     // Set the bounds for the left text box, right text box, and keyboard component
