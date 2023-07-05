@@ -11,14 +11,12 @@
 #include <JuceHeader.h>
 #include "ChordDetector.h"
 
-
-//==============================================================================
-ChordDetector::ChordDetector()
+juce::Array<ChordData> ChordDetector::loadChordDataFromFile()
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
+    juce::Array<ChordData> chordsList;
+
     // Load chord data from JSON file
-    juce::File jsonFile("chords.json");
+    juce::File jsonFile(juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory().getChildFile("chords.json"));
     juce::String jsonString;
     jsonString = jsonFile.loadFileAsString();
 
@@ -31,6 +29,7 @@ ChordDetector::ChordDetector()
         // Convert var array to juce::Array
         juce::Array<juce::var>* chordArray = jsonData.getArray();
 
+        
         // Iterate through the chord array
         for (const juce::var& chordVar : *chordArray)
         {
@@ -38,20 +37,31 @@ ChordDetector::ChordDetector()
             juce::String name = chordVar["name"].toString();
             juce::String postfix = chordVar["postfix"].toString();
             juce::Array<juce::var> intervalVarArray = chordVar["interval"];
-
+            
             // Convert interval var array to juce::Array<int>
             juce::Array<int> intervalArray;
-            for (const juce::var& intervalVar : intervalVarArray)
+            for (int i = 0; i < intervalVarArray[0].size(); ++i)
             {
-                if (intervalVar.isInt())
-                    intervalArray.add(intervalVar);
+                if (intervalVarArray[0][i].isInt())
+                {
+                    intervalArray.add(intervalVarArray[0][i]);
+                }
             }
 
             // Create ChordData object and add it to chordsList
-            ChordData chordData { name, postfix, intervalArray };
+            ChordData chordData{ name, postfix, intervalArray };
             chordsList.add(chordData);
         }
     }
+
+    return chordsList;
+}
+
+
+//==============================================================================
+ChordDetector::ChordDetector()
+{
+
 }
 
 ChordDetector::~ChordDetector()
@@ -108,6 +118,7 @@ juce::Array<NoteInterval> ChordDetector::getNotesIntervals(juce::Array<int> inpu
 
 int ChordDetector::getChordIndexByInterval(const juce::Array<int>& interval)
 {
+    chordsList = loadChordDataFromFile();
     for (int i = 0; i < chordsList.size(); ++i)
     {
         const ChordData& chord = chordsList[i];
@@ -127,6 +138,7 @@ juce::Array<ChordIndexStartpoint> ChordDetector::getChordsIndexStartPoint(juce::
     juce::Array<int> interval;
     for (const NoteInterval& noteInterval : notesIntervals)
     {
+        
         notes.add(noteInterval.note);
         interval.add(noteInterval.interval);
     }
