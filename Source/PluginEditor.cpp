@@ -16,6 +16,10 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     : AudioProcessorEditor(&p), processor(p), inputKeyboardComponent(p.inputKeyboardState, juce::MidiKeyboardComponent::horizontalKeyboard),
     outputKeyboardComponent(p.outputKeyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
 {
+    inputNotesLabel.setColour(juce::Label::textColourId, juce::Colours::white);
+    inputNotesLabel.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(inputNotesLabel);
+
     inputNotesMessageBox.setMultiLine(false);
     inputNotesMessageBox.setReadOnly(true);
     inputNotesMessageBox.setCaretVisible(false);
@@ -26,6 +30,10 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     inputNotesMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
     addAndMakeVisible(inputNotesMessageBox);
 
+    inputChordLabel.setColour(juce::Label::textColourId, juce::Colours::white);
+    inputChordLabel.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(inputChordLabel);
+
     inputChordMessageBox.setMultiLine(false);
     inputChordMessageBox.setReadOnly(true);
     inputChordMessageBox.setCaretVisible(false);
@@ -35,16 +43,6 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     inputChordMessageBox.setColour(juce::TextEditor::outlineColourId, juce::Colour(0x1c000000));
     inputChordMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
     addAndMakeVisible(inputChordMessageBox);
-
-    outputNotesMessageBox.setMultiLine(false);
-    outputNotesMessageBox.setReadOnly(true);
-    outputNotesMessageBox.setCaretVisible(false);
-    outputNotesMessageBox.setPopupMenuEnabled(false);
-    outputNotesMessageBox.setJustification(juce::Justification::centred);
-    outputNotesMessageBox.setColour(juce::TextEditor::backgroundColourId, juce::Colour(0x32ffffff));
-    outputNotesMessageBox.setColour(juce::TextEditor::outlineColourId, juce::Colour(0x1c000000));
-    outputNotesMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
-    addAndMakeVisible(outputNotesMessageBox);
 
     inputKeyboardComponent.setKeyWidth(19.0f);
     inputKeyboardComponent.setAvailableRange(0, 120);
@@ -59,6 +57,24 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     stTransposeSlider.setRange(-12, 12, 1);
     stTransposeSlider.setTextValueSuffix(" St");
     addAndMakeVisible(stTransposeSlider);
+
+    outputNotesLabel.setColour(juce::Label::textColourId, juce::Colours::white);
+    outputNotesLabel.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(outputNotesLabel);
+
+    outputNotesMessageBox.setMultiLine(false);
+    outputNotesMessageBox.setReadOnly(true);
+    outputNotesMessageBox.setCaretVisible(false);
+    outputNotesMessageBox.setPopupMenuEnabled(false);
+    outputNotesMessageBox.setJustification(juce::Justification::centred);
+    outputNotesMessageBox.setColour(juce::TextEditor::backgroundColourId, juce::Colour(0x32ffffff));
+    outputNotesMessageBox.setColour(juce::TextEditor::outlineColourId, juce::Colour(0x1c000000));
+    outputNotesMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
+    addAndMakeVisible(outputNotesMessageBox);
+
+    outputChordLabel.setColour(juce::Label::textColourId, juce::Colours::white);
+    outputChordLabel.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(outputChordLabel);
 
     outputChordMessageBox.setMultiLine(false);
     outputChordMessageBox.setReadOnly(true);
@@ -95,23 +111,40 @@ void JamsterScannerAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-
+    
+    int labelHeight = 30;
     int keyboardHeight = 80;
     int textBoxHeight = 40;
     int sliderBoxWidth = 300;
     int sliderBoxHeight = 40;
 
     // Calculate the bounds for the left text box
+    juce::Rectangle<int> inputNotesLabelBounds = getLocalBounds()
+        .withHeight(labelHeight)
+        .removeFromLeft(getWidth() / 2)
+        .reduced(8); // Divide the width in half for two equal boxes
+
+    // Calculate the bounds for the left text box
+    juce::Rectangle<int> inputChordLabelBounds = getLocalBounds()
+        .withHeight(labelHeight)
+        .removeFromRight(getWidth() / 2)
+        .reduced(8); // Divide the width in half for two equal boxes
+
+    // Calculate the bounds for the left text box
     juce::Rectangle<int> inputNotesBoxBounds = getLocalBounds()
         .withHeight(textBoxHeight)
         .removeFromLeft(getWidth() / 2)
+        .withY(inputNotesLabelBounds.getY() + labelHeight)
         .reduced(8); // Divide the width in half for two equal boxes
 
     // Calculate the bounds for the right text box
     juce::Rectangle<int> inputChordBoxBounds = getLocalBounds()
         .withHeight(textBoxHeight)
         .removeFromRight(getWidth() / 2)
+        .withY(inputNotesLabelBounds.getY() + 8)
         .reduced(8); // Divide the width in half for two equal boxes
+
+    
 
     // Calculate the bounds for the keyboard component
     juce::Rectangle<int> inputKeyboardBounds = getLocalBounds()
@@ -128,21 +161,35 @@ void JamsterScannerAudioProcessorEditor::resized()
     juce::Rectangle<int> outputNotesBoxBounds = getLocalBounds()
         .withHeight(textBoxHeight)
         .removeFromLeft(getWidth() / 2)
-        .withY(outputKeyboardBounds.getY() - textBoxHeight - 8)
+        .withY(outputKeyboardBounds.getY() - (textBoxHeight + 8))
         .reduced(8); // Divide the width in half for two equal boxes
 
     // Calculate the bounds for the right text box
     juce::Rectangle<int> outputChordBoxBounds = getLocalBounds()
         .withHeight(textBoxHeight)
         .removeFromRight(getWidth() / 2)
-        .withY(outputKeyboardBounds.getY() - textBoxHeight - 8)
+        .withY(outputKeyboardBounds.getY() - (textBoxHeight + 8))
+        .reduced(8); // Divide the width in half for two equal boxes
+
+    // Calculate the bounds for the left text box
+    juce::Rectangle<int> outputNotesLabelBounds = getLocalBounds()
+        .withHeight(labelHeight)
+        .removeFromLeft(getWidth() / 2)
+        .withY(outputNotesBoxBounds.getY() - (labelHeight + 8))
+        .reduced(8); // Divide the width in half for two equal boxes
+
+    // Calculate the bounds for the left text box
+    juce::Rectangle<int> outputChordLabelBounds = getLocalBounds()
+        .withHeight(labelHeight)
+        .removeFromRight(getWidth() / 2)
+        .withY(outputNotesBoxBounds.getY() - (labelHeight + 8))
         .reduced(8); // Divide the width in half for two equal boxes
 
     // Calculate the bounds for the keyboard component
     juce::Rectangle<int> octSliderBounds = getLocalBounds()
         .removeFromTop(sliderBoxHeight)
         .withWidth(sliderBoxWidth)
-        .withY((outputNotesBoxBounds.getY() - (outputNotesBoxBounds.getY() - inputKeyboardBounds.getY()) / 2) - sliderBoxHeight / 2)
+        .withY((outputNotesBoxBounds.getY() - (outputNotesBoxBounds.getY() - inputKeyboardBounds.getY()) / 2) - sliderBoxHeight)
         .withX(getLocalBounds().getCentreX() - sliderBoxWidth / 2)
         .reduced(8);
 
@@ -150,17 +197,21 @@ void JamsterScannerAudioProcessorEditor::resized()
     juce::Rectangle<int> stSliderBounds = getLocalBounds()
         .removeFromTop(sliderBoxHeight)
         .withWidth(sliderBoxWidth)
-        .withY((outputNotesBoxBounds.getY() - (outputNotesBoxBounds.getY() - inputKeyboardBounds.getY()) / 2) + sliderBoxHeight / 2)
+        .withY((outputNotesBoxBounds.getY() - (outputNotesBoxBounds.getY() - inputKeyboardBounds.getY()) / 2) + sliderBoxHeight)
         .withX(getLocalBounds().getCentreX() - sliderBoxWidth / 2)
         .reduced(8);
 
     // Set the bounds for the left text box, right text box, and keyboard component
+    inputNotesLabel.setBounds(inputNotesLabelBounds);
     inputNotesMessageBox.setBounds(inputNotesBoxBounds);
+    inputChordLabel.setBounds(inputChordLabelBounds);
     inputChordMessageBox.setBounds(inputChordBoxBounds);
     inputKeyboardComponent.setBounds(inputKeyboardBounds);
     octTransposeSlider.setBounds(octSliderBounds);
     stTransposeSlider.setBounds(stSliderBounds);
+    outputNotesLabel.setBounds(outputNotesLabelBounds);
     outputNotesMessageBox.setBounds(outputNotesBoxBounds);
+    outputChordLabel.setBounds(outputChordLabelBounds);
     outputChordMessageBox.setBounds(outputChordBoxBounds);
     outputKeyboardComponent.setBounds(outputKeyboardBounds);
 }
