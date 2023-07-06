@@ -53,10 +53,12 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     octTransposeSlider.setRange(-10, 10, 1);
     octTransposeSlider.setTextValueSuffix(" Oct");
     addAndMakeVisible(octTransposeSlider);
+    octTransposeSlider.setValue(processor.octTransposeValue, juce::dontSendNotification);
 
     stTransposeSlider.setRange(-12, 12, 1);
     stTransposeSlider.setTextValueSuffix(" St");
     addAndMakeVisible(stTransposeSlider);
+    stTransposeSlider.setValue(processor.stTransposeValue, juce::dontSendNotification);
 
     outputNotesLabel.setColour(juce::Label::textColourId, juce::Colours::white);
     outputNotesLabel.setJustificationType(juce::Justification::centred);
