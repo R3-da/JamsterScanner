@@ -178,13 +178,9 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     }
 
     outputKeyboardState.processNextMidiBuffer(outputMidiBuffer, 0, buffer.getNumSamples(), true);
-    /*
-    for (int deviceIndex = 0; deviceIndex < juce::MidiOutput::getAvailableDevices().size(); ++deviceIndex)
-    {
-        midiOutputDevice = juce::MidiOutput::openDevice(deviceIndex);
-        midiOutputDevice->sendBlockOfMessagesNow(outputMidiBuffer);
-    }
-    */
+
+    midiOutputDevice->sendBlockOfMessagesNow(outputMidiBuffer);
+    
     midi.clear();
     outputMidiBuffer.clear();
 }
