@@ -60,7 +60,6 @@ void ChordDetector::paint (juce::Graphics& g)
        You should replace everything in this method with your own
        drawing code..
     */
-
 }
 
 void ChordDetector::resized()

@@ -146,12 +146,8 @@ void JamsterScannerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer(channel);
-    }
-    /*
-    if (midi.isEmpty()) {
-        return;
-    }
-    */
+    } 
+
     inputKeyboardState.processNextMidiBuffer(midi, 0, buffer.getNumSamples(), true);
 
     bool update = false;

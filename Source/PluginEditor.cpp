@@ -221,9 +221,6 @@ void JamsterScannerAudioProcessorEditor::clearInputNotes() {
 
 void JamsterScannerAudioProcessorEditor::logInputChord(const juce::Array<int> myNumbers)
 {
-    //inputWriteChord(juce::MidiMessage::getMidiNoteName(message, true, true, 5));
-    //juce::Array<int> myNumbers = { 60, 64, 67 };
-
     auto outputTest2 = chordDetector.getChordsIndexStartPoint(myNumbers);
     inputWriteChord(outputTest2);
 }
