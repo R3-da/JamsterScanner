@@ -50,12 +50,16 @@ private:
     // access the processor object that created it.
     JamsterScannerAudioProcessor& processor;
 
+    juce::Label inputNotesLabel = { "", "Input Notes" };
     juce::TextEditor inputNotesMessageBox;
+    juce::Label inputChordLabel = { "", "Input Chord" };
     juce::TextEditor inputChordMessageBox;
     CustomMidiKeyboardComponent inputKeyboardComponent;
     juce::Slider octTransposeSlider;
     juce::Slider stTransposeSlider;
+    juce::Label outputNotesLabel = { "", "Output Notes" };
     juce::TextEditor outputNotesMessageBox;
+    juce::Label outputChordLabel = { "", "Output Chord" };
     juce::TextEditor outputChordMessageBox;
     CustomMidiKeyboardComponent outputKeyboardComponent;
 
