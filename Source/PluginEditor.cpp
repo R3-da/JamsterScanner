@@ -19,6 +19,7 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     inputNotesLabel.setColour(juce::Label::textColourId, juce::Colours::white);
     inputNotesLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(inputNotesLabel);
+    inputNotesLabel.setMouseClickGrabsKeyboardFocus(false);
 
     inputNotesMessageBox.setMultiLine(false);
     inputNotesMessageBox.setReadOnly(true);
@@ -29,10 +30,12 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     inputNotesMessageBox.setColour(juce::TextEditor::outlineColourId, juce::Colour(0x1c000000));
     inputNotesMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
     addAndMakeVisible(inputNotesMessageBox);
+    inputNotesMessageBox.setMouseClickGrabsKeyboardFocus(false);
 
     inputChordLabel.setColour(juce::Label::textColourId, juce::Colours::white);
     inputChordLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(inputChordLabel);
+    inputChordLabel.setMouseClickGrabsKeyboardFocus(false);
 
     inputChordMessageBox.setMultiLine(false);
     inputChordMessageBox.setReadOnly(true);
@@ -43,26 +46,33 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     inputChordMessageBox.setColour(juce::TextEditor::outlineColourId, juce::Colour(0x1c000000));
     inputChordMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
     addAndMakeVisible(inputChordMessageBox);
+    inputChordMessageBox.setMouseClickGrabsKeyboardFocus(false);
 
     inputKeyboardComponent.setKeyWidth(19.0f);
     inputKeyboardComponent.setAvailableRange(0, 120);
     inputKeyboardComponent.setOctaveForMiddleC(5);
     inputKeyboardComponent.setLowestVisibleKey(30);
     addAndMakeVisible(inputKeyboardComponent);
+    inputKeyboardComponent.setWantsKeyboardFocus(true);
 
     octTransposeSlider.setRange(-10, 10, 1);
     octTransposeSlider.setTextValueSuffix(" Oct");
+    octTransposeSlider.setTextBoxIsEditable(false);
     addAndMakeVisible(octTransposeSlider);
     octTransposeSlider.setValue(processor.octTransposeValue, juce::dontSendNotification);
+    octTransposeSlider.setMouseClickGrabsKeyboardFocus(false);
 
     stTransposeSlider.setRange(-12, 12, 1);
     stTransposeSlider.setTextValueSuffix(" St");
+    stTransposeSlider.setTextBoxIsEditable(false);
     addAndMakeVisible(stTransposeSlider);
     stTransposeSlider.setValue(processor.stTransposeValue, juce::dontSendNotification);
+    stTransposeSlider.setMouseClickGrabsKeyboardFocus(false);
 
     outputNotesLabel.setColour(juce::Label::textColourId, juce::Colours::white);
     outputNotesLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(outputNotesLabel);
+    outputNotesLabel.setMouseClickGrabsKeyboardFocus(false);
 
     outputNotesMessageBox.setMultiLine(false);
     outputNotesMessageBox.setReadOnly(true);
@@ -73,10 +83,12 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     outputNotesMessageBox.setColour(juce::TextEditor::outlineColourId, juce::Colour(0x1c000000));
     outputNotesMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
     addAndMakeVisible(outputNotesMessageBox);
+    outputNotesMessageBox.setMouseClickGrabsKeyboardFocus(false);
 
     outputChordLabel.setColour(juce::Label::textColourId, juce::Colours::white);
     outputChordLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(outputChordLabel);
+    outputChordLabel.setMouseClickGrabsKeyboardFocus(false);
 
     outputChordMessageBox.setMultiLine(false);
     outputChordMessageBox.setReadOnly(true);
@@ -87,17 +99,20 @@ JamsterScannerAudioProcessorEditor::JamsterScannerAudioProcessorEditor(JamsterSc
     outputChordMessageBox.setColour(juce::TextEditor::outlineColourId, juce::Colour(0x1c000000));
     outputChordMessageBox.setColour(juce::TextEditor::shadowColourId, juce::Colour(0x16000000));
     addAndMakeVisible(outputChordMessageBox);
+    outputChordMessageBox.setMouseClickGrabsKeyboardFocus(false);
 
     outputKeyboardComponent.setKeyWidth(19.0f);
     outputKeyboardComponent.setAvailableRange(0, 120);
     outputKeyboardComponent.setOctaveForMiddleC(5);
     outputKeyboardComponent.setLowestVisibleKey(30);
     addAndMakeVisible(outputKeyboardComponent);
+    outputKeyboardComponent.setMouseClickGrabsKeyboardFocus(false);
 
     addListeners(this);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize(700, 500);
+    setMouseClickGrabsKeyboardFocus(false);
 }
 
 JamsterScannerAudioProcessorEditor::~JamsterScannerAudioProcessorEditor()
