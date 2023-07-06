@@ -74,7 +74,7 @@ private:
 
     juce::Array<int> inputMessageLog;
     juce::Array<int> outputMessageLog;
-    //std::unique_ptr<juce::MidiOutput> midiOutputDevice;
+    std::unique_ptr<juce::MidiOutput> midiOutputDevice = juce::MidiOutput::openDevice(0);;
     juce::MidiBuffer outputMidiBuffer;
 
     void handleAsyncUpdate() override;
