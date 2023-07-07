@@ -2,7 +2,7 @@
 
 🎹 Introducing JamsterScanner: A MIDI Controller VST Plugin! 🎵
 
-I am delighted to share a video demo of JamsterScanner. This plugin, developed using the JUCE framework (a powerful audio application development toolkit based on C++), combines chord recognition and MIDI transposition capabilities.
+This plugin, developed using the JUCE framework (a powerful audio application development toolkit based on C++), combines chord recognition and MIDI transposition capabilities.
 
 JamsterScanner intelligently displays real-time chord names as you play them on your MIDI keyboard. Additionally, it offers the ability to transpose MIDI input by octaves or semitones. The transposed MIDI data is then sent as MIDI output to control other VST instrument plugins.
 
