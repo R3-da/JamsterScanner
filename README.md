@@ -2,11 +2,7 @@
 
 # Preview
 
-
-
 https://github.com/R3-da/JamsterScanner/assets/76736972/3a003589-7284-4a34-a998-49830a4f6755
-
-
 
 # Desscription
 🎹 Introducing JamsterScanner: A MIDI Controller VST Plugin! 🎵
