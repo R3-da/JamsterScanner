@@ -2,11 +2,11 @@
 
 # Preview
 
-<div align="center">
-  <a href="https://github.com/R3-da/JamsterScanner/assets/76736972/c0a842ef-36e1-4b97-b788-ba3c23d80802">
-    <img src="./img/video_thumbnail.jfif" alt="Video Thumbnail" width="480" height="270">
-  </a>
-</div>
+
+
+https://github.com/R3-da/JamsterScanner/assets/76736972/3a003589-7284-4a34-a998-49830a4f6755
+
+
 
 # Desscription
 🎹 Introducing JamsterScanner: A MIDI Controller VST Plugin! 🎵
