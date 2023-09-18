@@ -3,7 +3,7 @@
 # Preview
 
 <div align="center">
-  <a href="https://dms.licdn.com/playlist/vid/D4E05AQH-188AfTDMig/mp4-720p-30fp-crf28/0/1688694990427?e=1695600000&v=beta&t=wSb4P5vZJQpfFzflJxuU2yWxPsWTqHTVSuhKcVWWa-8">
+  <a href="https://github.com/R3-da/JamsterScanner/assets/76736972/c0a842ef-36e1-4b97-b788-ba3c23d80802">
     <img src="./img/video_thumbnail.jfif" alt="Video Thumbnail" width="480" height="270">
   </a>
 </div>
