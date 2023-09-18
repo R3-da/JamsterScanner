@@ -4,7 +4,7 @@
 
 <div align="center">
   <a href="https://dms.licdn.com/playlist/vid/D4E05AQH-188AfTDMig/mp4-720p-30fp-crf28/0/1688694990427?e=1695600000&v=beta&t=wSb4P5vZJQpfFzflJxuU2yWxPsWTqHTVSuhKcVWWa-8">
-    <img src="./img/app_icon_wbg.webp" alt="Video Thumbnail" width="480" height="270">
+    <img src="./img/video_thumbnail.jfif" alt="Video Thumbnail" width="480" height="270">
   </a>
 </div>
 
