@@ -1,5 +1,14 @@
 # JamsterScanner
 
+# Preview
+
+<div align="center">
+  <a href="https://www.youtube.com/your-video-url">
+    <img src="[img/video-thumbnail.png](https://dms.licdn.com/playlist/vid/D4E05AQH-188AfTDMig/mp4-720p-30fp-crf28/0/1688694990427?e=1695600000&v=beta&t=wSb4P5vZJQpfFzflJxuU2yWxPsWTqHTVSuhKcVWWa-8)" alt="Video Thumbnail" width="480" height="270">
+  </a>
+</div>
+
+# Desscription
 🎹 Introducing JamsterScanner: A MIDI Controller VST Plugin! 🎵
 
 This plugin, developed using the JUCE framework (a powerful audio application development toolkit based on C++), combines chord recognition and MIDI transposition capabilities.
